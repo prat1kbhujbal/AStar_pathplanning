@@ -1,5 +1,6 @@
 
 # AStar path planning for rigid body
+Implementation of AStar path planning algorithm for rigid robot
 ## Requirements and Libraries Used:
 - cv2
 - python3
