@@ -14,6 +14,122 @@ class Astar:
         self.parent = parent
 
 
+def verify_node(node, clearance):
+    """Check for borders with robot and obstacle clearance
+
+    Args:
+        node: Current Node
+        clearance (int): Total Clearance
+
+    Returns:
+        Bool: boolean value
+    """
+    px = node[0]
+    py = node[1]
+
+    if px < clearance:
+        return False
+    if py < clearance:
+        return False
+    if px >= (400 - clearance):
+        return False
+    if py >= (250 - clearance):
+        return False
+    return True
+
+
+def movem30(th):
+    """Angle to move 30 degree clockwise
+
+    Args:
+        th (int): angle
+
+    Returns:
+        int : new angle
+    """
+    new_th = th - 30
+    if new_th <= -360:
+        new_th = 360 + new_th
+    return new_th
+
+
+def move30(th):
+    """Angle to move 30 degree counter-clockwise
+
+    Args:
+        th (int): angle
+
+    Returns:
+        int : new angle
+    """
+    new_th = th + 30
+    if new_th >= 360:
+        new_th = new_th - 360
+    return new_th
+
+
+def movem60(th):
+    """Angle to move 60 degree clockwise
+
+    Args:
+        th (int): angle
+
+    Returns:
+        int : new angle
+    """
+    new_th = th - 60
+    if new_th <= -360:
+        new_th = 360 + th
+    return new_th
+
+
+def move60(th):
+    """Angle to move 60 degree counter-clockwise
+
+    Args:
+        th (int): angle
+
+    Returns:
+        int : new angle
+    """
+    new_th = th + 60
+    if new_th >= 360:
+        new_th = new_th - 360
+    return new_th
+
+
+def actions(px, py, th, step_size):
+    """Explore paths
+
+    Args:
+        px (float): current node x position
+        py (float): current node y position
+        th (int): current node angle
+        step_size (int): step size
+
+    Returns:
+        float array: Explored paths
+    """
+    '''Explore paths'''
+    actions = [
+        (px + (step_size * pb.cos(pb.radians(movem30(th)))),
+         py + (step_size * pb.sin(pb.radians(movem30(th)))),
+         movem30(th)),
+        (px + (step_size * pb.cos(pb.radians(move30(th)))),
+         py + (step_size * pb.sin(pb.radians(move30(th)))),
+         move30(th)),
+        (px + (step_size * pb.cos(pb.radians(movem60(th)))),
+         py + (step_size * pb.sin(pb.radians(movem60(th)))),
+         movem60(th)),
+        (px + (step_size * pb.cos(pb.radians(move60(th)))),
+         py + (step_size * pb.sin(pb.radians(move60(th)))),
+         move60(th)),
+        (px + (step_size * pb.cos(pb.radians(th))),
+         py + (step_size * pb.sin(pb.radians(th))),
+         th)]
+    return actions
+
+
 def astar(start, goal, map, step_size, clearance, animation):
     """ AStar Algorithm
     Args:
