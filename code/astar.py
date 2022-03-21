@@ -130,16 +130,55 @@ def actions(px, py, th, step_size):
     return actions
 
 
+def heuristic(node_pos, goal_node):
+    w = 1.0  # Assumed weight of heuristic
+    px = node_pos[0]
+    py = node_pos[1]
+    dist = w * pb.hypot(px - goal_node.position[0],
+                        py - goal_node.position[1])
+    return dist
+
+
+def planning(node, map, goal_node, step_size, clearance):
+    px = node.position[0]
+    py = node.position[1]
+    th = node.position[2]
+    action = actions(px, py, th, step_size)
+    explore = []
+    for i, path in enumerate(action):
+        if verify_node(path, clearance):
+            if map[int(path[0])][int(path[1])] == 0:
+                explore.append(Astar(path, 10 + node.cost, node))
+    return explore
+
+
+def visited_nodes(node, goal_node, narray):
+    node_pos = node.position
+    x = node_pos[0]
+    y = node_pos[1]
+    th = node_pos[2]
+    x = int((round(2 * x) / 2) / 0.5)
+    y = int((round(2 * y) / 2) / 0.5)
+    th = int(th / 30)
+    if ((node.cost + heuristic(node_pos, goal_node)) < narray[x, y, th]):
+        return True
+    else:
+        return False
+
+
+def goal_reached(node, goal_node, goal_thres):
+    node_pos = node.position
+    goal_distance = (pb.hypot((node_pos[0] -
+                               goal_node.position[0]),
+                              (node_pos[1] -
+                               goal_node.position[1])))
+    if goal_distance < goal_thres:
+        return True
+    else:
+        return False
+
+
 def astar(start, goal, map, step_size, clearance, animation):
-    """ AStar Algorithm
-    Args:
-        start : Start position
-        goal : Goal position
-        map : Updated Map
-        step_size (int): step size
-        clearance (int): Total clearance
-        animation (bool): To visualize
-    """
     narray = pb.array([[[pb.inf for k in range(12)]
                         for j in range(int(250 / 0.5))]
                        for i in range(int(400 / 0.5))])
