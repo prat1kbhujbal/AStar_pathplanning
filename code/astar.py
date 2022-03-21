@@ -15,6 +15,15 @@ class Astar:
 
 
 def verify_node(node, clearance):
+    """Check for borders with robot and obstacle clearance
+
+    Args:
+        node: Current Node
+        clearance (int): Total Clearance
+
+    Returns:
+        Bool: boolean value
+    """
     px = node[0]
     py = node[1]
 
@@ -30,6 +39,14 @@ def verify_node(node, clearance):
 
 
 def movem30(th):
+    """Angle to move 30 degree clockwise
+
+    Args:
+        th (int): angle
+
+    Returns:
+        int : new angle
+    """
     new_th = th - 30
     if new_th <= -360:
         new_th = 360 + new_th
@@ -37,6 +54,14 @@ def movem30(th):
 
 
 def move30(th):
+    """Angle to move 30 degree counter-clockwise
+
+    Args:
+        th (int): angle
+
+    Returns:
+        int : new angle
+    """
     new_th = th + 30
     if new_th >= 360:
         new_th = new_th - 360
@@ -44,6 +69,14 @@ def move30(th):
 
 
 def movem60(th):
+    """Angle to move 60 degree clockwise
+
+    Args:
+        th (int): angle
+
+    Returns:
+        int : new angle
+    """
     new_th = th - 60
     if new_th <= -360:
         new_th = 360 + th
@@ -51,6 +84,14 @@ def movem60(th):
 
 
 def move60(th):
+    """Angle to move 60 degree counter-clockwise
+
+    Args:
+        th (int): angle
+
+    Returns:
+        int : new angle
+    """
     new_th = th + 60
     if new_th >= 360:
         new_th = new_th - 360
@@ -58,6 +99,18 @@ def move60(th):
 
 
 def actions(px, py, th, step_size):
+    """Explore paths
+
+    Args:
+        px (float): current node x position
+        py (float): current node y position
+        th (int): current node angle
+        step_size (int): step size
+
+    Returns:
+        float array: Explored paths
+    """
+    '''Explore paths'''
     actions = [
         (px + (step_size * pb.cos(pb.radians(movem30(th)))),
          py + (step_size * pb.sin(pb.radians(movem30(th)))),
@@ -78,6 +131,15 @@ def actions(px, py, th, step_size):
 
 
 def astar(start, goal, map, step_size, clearance, animation):
+    """ AStar Algorithm
+    Args:
+        start : Start position
+        goal : Goal position
+        map : Updated Map
+        step_size (int): step size
+        clearance (int): Total clearance
+        animation (bool): To visualize
+    """
     narray = pb.array([[[pb.inf for k in range(12)]
                         for j in range(int(250 / 0.5))]
                        for i in range(int(400 / 0.5))])
