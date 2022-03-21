@@ -131,6 +131,15 @@ def actions(px, py, th, step_size):
 
 
 def heuristic(node_pos, goal_node):
+    """Heuristic distance
+
+    Args:
+        node_pos : Current node position
+        goal_node : Goal node
+
+    Returns:
+        float: distance
+    """
     w = 1.0  # Assumed weight of heuristic
     px = node_pos[0]
     py = node_pos[1]
@@ -140,6 +149,8 @@ def heuristic(node_pos, goal_node):
 
 
 def planning(node, map, goal_node, step_size, clearance):
+    """Returns explored paths and corresponding costs
+    """
     px = node.position[0]
     py = node.position[1]
     th = node.position[2]
@@ -153,6 +164,8 @@ def planning(node, map, goal_node, step_size, clearance):
 
 
 def visited_nodes(node, goal_node, narray):
+    """Check if node is visited or not
+    """
     node_pos = node.position
     x = node_pos[0]
     y = node_pos[1]
@@ -167,6 +180,16 @@ def visited_nodes(node, goal_node, narray):
 
 
 def goal_reached(node, goal_node, goal_thres):
+    """Check if goal reached in goal tolerance
+
+    Args:
+        node : Current node
+        goal_node : Goal node
+        goal_thres : goal tolerance
+
+    Returns:
+        boolean value
+    """
     node_pos = node.position
     goal_distance = (pb.hypot((node_pos[0] -
                                goal_node.position[0]),
@@ -179,6 +202,15 @@ def goal_reached(node, goal_node, goal_thres):
 
 
 def astar(start, goal, map, step_size, clearance, animation):
+    """ AStar Algorithm
+    Args:
+        start : Start position
+        goal : Goal position
+        map : Updated Map
+        step_size (int): step size
+        clearance (int): Total clearance
+        animation (bool): To visualize
+    """
     narray = pb.array([[[pb.inf for k in range(12)]
                         for j in range(int(250 / 0.5))]
                        for i in range(int(400 / 0.5))])
